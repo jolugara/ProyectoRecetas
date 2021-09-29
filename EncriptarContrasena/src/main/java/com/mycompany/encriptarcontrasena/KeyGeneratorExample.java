@@ -5,17 +5,15 @@
  */
 package com.mycompany.encriptarcontrasena;
 
-import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
+import java.security.Key;
 import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
+import java.security.SecureRandom;
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.KeyGenerator;
 import javax.crypto.NoSuchPaddingException;
-import javax.crypto.SecretKey;
-import javax.crypto.spec.IvParameterSpec;
 
 /**
  *
@@ -26,23 +24,26 @@ public class KeyGeneratorExample {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws NoSuchAlgorithmException, InvalidKeyException, NoSuchProviderException, NoSuchPaddingException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
+    public static void main(String[] args) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
         // TODO code application logic here
-                //IV
-        IvParameterSpec ivSpec = new IvParameterSpec(new byte[16]);  //Oups. All 0s
+        //Creating a KeyGenerator object
+      KeyGenerator keyGen = KeyGenerator.getInstance("DES");
+      
+      //Creating a SecureRandom object
+      SecureRandom secRandom = new SecureRandom();
+      
+      //Initializing the KeyGenerator
+      keyGen.init(secRandom);
+      
+      //Creating/Generating a key
+      Key key = keyGen.generateKey();
+      
+      System.out.println(key);      
+      Cipher cipher = Cipher.getInstance("DES/ECB/PKCS5Padding");      
+      cipher.init(cipher.ENCRYPT_MODE, key);      
 
-        //Key
-        KeyGenerator generator = KeyGenerator.getInstance("AES");
-        generator.init(128);
-        SecretKey secretKey = generator.generateKey();
-
-        //Encrypt
-        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding", "BC");
-        cipher.init(Cipher.ENCRYPT_MODE, secretKey, ivSpec);
-        cipher.update(message.getBytes());
-
-        byte[] data = cipher.doFinal();
-        System.out.println(HexUtil.toString(data));
-    }
-    
+      String msg = new String("Hi how are you");
+      byte[] bytes = cipher.doFinal(msg.getBytes());      
+      System.out.println(bytes);      
+   } 
 }
