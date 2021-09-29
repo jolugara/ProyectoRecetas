@@ -20,7 +20,6 @@ import javax.crypto.NoSuchPaddingException;
  * @author alumno
  */
 public class KeyGeneratorExample {
-
     /**
      * @param args the command line arguments
      */
