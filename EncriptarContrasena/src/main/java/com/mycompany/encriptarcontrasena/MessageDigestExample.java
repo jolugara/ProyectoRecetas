@@ -11,7 +11,6 @@ import java.util.Scanner;
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 
-
 /**
  *
  * @author alumno
